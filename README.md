@@ -1,4 +1,4 @@
-# Nginx configuration for Mac OS X as well as MySQL and MongoDB.
+# Nginx configuration for Mac OS X PHP Projects using MySQL and MongoDB.
 
 ## Introduction
    
@@ -8,7 +8,7 @@ It is inspired by the work of [perusio](https://github.com/perusio "perusio") an
 
 ## Supported projects
 
-*  WordPress
+*  WordPress (currently does not support wp-supercache)
 *  Symfony 2
 
 ## Requirements
@@ -22,7 +22,9 @@ It is inspired by the work of [perusio](https://github.com/perusio "perusio") an
 
 This will describe all the steps required to install everything. All of this is done through Terminal.
 
-### MySQL
+### Databases
+
+#### MySQL
 
 Installation steps.
 
@@ -38,19 +40,27 @@ Finally, MySQL is configured using this command:
 
 	/usr/local/Cellar/mysql/5.5.20/bin/mysql_secure_installation
 
-### PHP with php-fpm
+#### MongoDB
 
-#### Basic
+	brew install mongodb
 
-There is no formula by default for PHP so we need to go get it.
+### PHP and other libraries
 
-	curl -O https://raw.github.com/ampt/homebrew-php/master/Formula/php.rb
+This step will explain how to install PHP with fpm as well as other libraies you might need for your projects.
 
-	mv php.rb `brew --prefix`/Library/Formula
+_Please note that additional configuration options will be supplied by the homebrew installer. Please follow those directions._
 
-We can then install PHP using Homebrew.
+#### PHP with fpm
 
-	brew install php --with-mysql --with-fpm
+There is no formula by default, but there is a github project maintainging all php brews. You can find it [here](https://github.com/josegonzalez/homebrew-php "here").
+
+You can omit the `--with-mysql` if you will not be using it.
+
+	brew install https://github.com/josegonzalez/homebrew-php/raw/master/Formula/php.rb --with-mysql --with-fpm
+
+#### APC
+	
+	brew install https://github.com/josegonzalez/homebrew-php/raw/master/Formula/apc-php.rb
 
 #### mongo-php
 
@@ -66,5 +76,30 @@ First, install Nginx.
 
 	brew install nginx
 
+#### Configuration
+
 Importing our configuration requires us to replace the old config files. And cloning the git repo.
 
+1. Rename the default config directiory
+
+	mv /usr/local/etc/nginx /usr/local/etc/nginx.old
+
+2. Clone the git repository from github. _Or, alternatively, you can also download the files and copy the manually._
+
+3. Use the default configs in `sites-available` to create your site configs.
+
+4. Create a `sites-enabled` directory.
+
+	mkdir /usr/local/etc/nginx/sitews-enabled
+
+5. Create symlinks to your config files in `sites-available` in `site-enabled` using `ln -s`.
+
+## Project Configuration
+
+### Nginx User
+
+By default, the user is `nobody`.
+
+### WordPress
+
+You'll need to give write access to your WordPress folder to the nginx user. You'll also need to give ownership to the files to the nginx user if you want the automatic updates to work. This is done using `chown -R nobody /path/to/wp`. If you're using a different user, replace `nobody` by that user.
