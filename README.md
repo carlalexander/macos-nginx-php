@@ -43,6 +43,14 @@ Finally, MySQL is configured using this command:
 #### MongoDB
 
 	brew install mongodb
+	
+#### PostgreSQL
+	
+	brew install postgresql
+	
+For new installations, You need to initialize the database:
+
+	initdb /usr/local/var/postgres -E utf8
 
 ### PHP and other libraries
 
@@ -50,25 +58,27 @@ This step will explain how to install PHP with fpm as well as other libraies you
 
 _Please note that additional configuration options will be supplied by the homebrew installer. Please follow those directions._
 
-#### PHP with fpm
+#### PHP with Homebrew
 
 There is no formula by default, but there is a github project maintainging all php brews. You can find it [here](https://github.com/josegonzalez/homebrew-php "here").
 
-You can omit the `--with-mysql` if you will not be using it.
+#### PHP with fpm
 
-	brew install https://github.com/josegonzalez/homebrew-php/raw/master/Formula/php.rb --with-mysql --with-fpm
+You can omit the `--with-mysql --with-pgsql` if you will not be using it.
+
+	brew install php54 --with-mysql --with-pgsql --with-fpm
 
 #### APC
 	
-	brew install https://github.com/josegonzalez/homebrew-php/raw/master/Formula/apc-php.rb
+	brew install php54-apc
 
 #### mongo-php
 
-	brew install https://github.com/josegonzalez/homebrew-php/raw/master/Formula/mongo-php.rb
+	brew install php54-mongo
 
 #### xdebug
 
-	brew install https://github.com/josegonzalez/homebrew-php/raw/master/Formula/php-xdebug.rb
+	brew install php54-xdebug
 
 ### Nginx
 
@@ -90,7 +100,7 @@ Importing our configuration requires us to replace the old config files. And clo
 
 4. Create a `sites-enabled` directory.
 
-	mkdir /usr/local/etc/nginx/sitews-enabled
+	mkdir /usr/local/etc/nginx/sites-enabled
 
 5. Create symlinks to your config files in `sites-available` in `site-enabled` using `ln -s`.
 
