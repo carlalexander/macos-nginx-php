@@ -1,4 +1,4 @@
-# Nginx configuration for Mac OS X PHP Projects using MySQL and MongoDB.
+# Nginx configuration for Mac OS X PHP Projects.
 
 ## Introduction
    
